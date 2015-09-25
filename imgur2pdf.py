@@ -12,6 +12,12 @@ from reportlab.lib.enums import TA_JUSTIFY
 import requests
 import shutil
 import os
+import sys
+import time
+from progressbar import AnimatedMarker, Bar, BouncingBar, Counter, ETA, \
+    FileTransferSpeed, FormatLabel, Percentage, \
+    ProgressBar, ReverseBar, RotatingMarker, \
+    SimpleProgress, Timer, AdaptiveETA, AdaptiveTransferSpeed
 
 # trying to fix the error messages
 import urllib3
@@ -37,6 +43,9 @@ Story=[]
 styles=getSampleStyleSheet()
 
 items = client.get_album_images(str(album))
+m_value = len(items)
+pbar = ProgressBar(widgets=[Percentage(), Bar()], max_value=m_value).start()
+i = 1
 for item in items:
 
         #print(str(item.title))
@@ -65,7 +74,8 @@ for item in items:
         if item.description:
                 Story.append(Paragraph(item.description, styles["Normal"]))
         Story.append(PageBreak())
-
+	pbar.update(i + 1)
 doc.build(Story)
-print("file created -> "+str(album_file))
+pbar.finish()
+print("\nfile created -> "+str(album_file))
 os.system("rm *.jpg")
