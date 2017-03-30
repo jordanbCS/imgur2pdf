@@ -67,5 +67,5 @@ for item in items:
         Story.append(PageBreak())
 
 doc.build(Story)
-print("file created -> "+str(album_file))
+print("file created -> "+ album_file)
 os.system("rm *.jpg")
